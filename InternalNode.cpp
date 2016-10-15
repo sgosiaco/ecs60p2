@@ -71,7 +71,7 @@ BTreeNode* InternalNode::addFull(BTreeNode *ptr, int pos)
 
   BTreeNode *last = children[count - 1];
 
-  for(int i = count - 2; i >= 0; i--)
+  for(int i = count - 2; i >= pos; i--)
   {
     keys[i + 1] = keys[i];
     children[i + 1] = children[i];
@@ -123,7 +123,6 @@ InternalNode* InternalNode::insert(int value)
 
 void InternalNode::insert(BTreeNode *oldRoot, BTreeNode *node2)
 { // Node must be the root, and node1
-  // students must write this
   keys[0] = oldRoot->getMinimum();
   children[0] = oldRoot;
   keys[1] = node2->getMinimum();
@@ -142,9 +141,14 @@ void InternalNode::insert(BTreeNode *oldRoot, BTreeNode *node2)
 
 void InternalNode::insert(BTreeNode *newNode) // from a sibling
 {
-  keys[count] = newNode->getMinimum();
-  children[count] = newNode;
-  count++;
+  int i;
+
+  if(newNode->getMinimum() <= keys[0])
+    i = 0;
+  else
+    i = count;
+
+  add(newNode, i);
 
 } // InternalNode::insert()
 
