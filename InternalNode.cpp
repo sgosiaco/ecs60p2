@@ -26,12 +26,12 @@ void InternalNode::add(BTreeNode *ptr, int pos)
 
   for(i = count - 1; i >= pos; i--)
   {
-    children[i + 1] = children[i];
     keys[i + 1] = keys[i];
+    children[i + 1] = children[i];
   }
 
-  children[pos] = ptr;
   keys[pos] = ptr->getMinimum();
+  children[pos] = ptr;
   count++;
   ptr->setParent(this);
 
@@ -45,12 +45,12 @@ void InternalNode::addLeft(BTreeNode *last)
 
   for(int i = 0; i < count - 1; i++)
   {
-    children[i] = children[i + 1];
     keys[i] = keys[i + 1];
+    children[i] = children[i + 1];
   }
 
-  children[count - 1] = last;
   keys[count - 1] = last->getMinimum();
+  children[count - 1] = last;
   last->setParent(this);
   if(parent)
     parent->updateMin(this);
@@ -59,6 +59,7 @@ void InternalNode::addLeft(BTreeNode *last)
 void InternalNode::addRight(BTreeNode *ptr, BTreeNode *last)
 {
   ((InternalNode*)rightSibling)->insert(last);
+
   if(ptr == children[0] && parent)
     parent->updateMin(this);
 }
@@ -72,12 +73,12 @@ BTreeNode* InternalNode::addFull(BTreeNode *ptr, int pos)
 
   for(int i = count - 2; i >= 0; i--)
   {
-    children[i + 1] = children[i];
     keys[i + 1] = keys[i];
+    children[i + 1] = children[i];
   }
 
-  children[pos] = ptr;
   keys[pos] = ptr->getMinimum();
+  children[pos] = ptr;
   ptr->setParent(this);
   return last;
 }
@@ -177,5 +178,25 @@ void InternalNode::updateMin(const BTreeNode *node)
 
 InternalNode* InternalNode::split(BTreeNode *last)
 {
-  return NULL;
+  InternalNode *temp = new InternalNode(internalSize, leafSize, parent, this, rightSibling);
+
+  if(rightSibling)
+    rightSibling->setLeftSibling(temp);
+
+  rightSibling = temp;
+
+  for(int i = (internalSize + 1) / 2; i < internalSize; i++)
+  {
+    temp->keys[temp->getCount()] = keys[i];
+    temp->children[temp->getCount()] = children[i];
+    temp->count++;
+    children[i]->setParent(temp);
+  }
+
+  temp->keys[temp->getCount()] = last->getMinimum();
+  temp->children[temp->getCount()] = last;
+  temp->count++;
+  last->setParent(temp);
+  count = (internalSize + 1) / 2;
+  return temp;
 }
