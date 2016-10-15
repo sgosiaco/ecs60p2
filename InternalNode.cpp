@@ -174,3 +174,8 @@ void InternalNode::updateMin(const BTreeNode *node)
       break;
     }
 }
+
+InternalNode* InternalNode::split(BTreeNode *last)
+{
+  return NULL;
+}
