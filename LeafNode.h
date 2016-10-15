@@ -14,6 +14,10 @@ public:
   void print(Queue <BTreeNode*> &queue);
 
   void add(int value);
+  void addFull(int value, int &last);
+  void addLeft(int value, int last);
+  void addRight(int value, int last);
+  LeafNode* split(int value, int last);
 }; //LeafNode class
 
 #endif

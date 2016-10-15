@@ -15,6 +15,12 @@ void BTree::insert(const int value)
 {
   // students must write this
   BTreeNode* ptr = root->insert(value);
+  if(ptr) //if true -> root split
+  {
+    InternalNode* temp = new InternalNode(internalSize, leafSize, NULL, NULL, NULL);
+    temp->insert(root, ptr);
+    root = temp;
+  }//if
 } // BTree::insert()
 
 
