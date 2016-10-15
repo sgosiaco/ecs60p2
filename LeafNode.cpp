@@ -23,10 +23,22 @@ int LeafNode::getMinimum()const
 
 } // LeafNode::getMinimum()
 
+void LeafNode::add(int value)
+{
+  int i;
+  for(i = count - 1; i >= 0 && value < values[i]; i--)
+    values[i + 1] = values[i];
+
+  values[i + 1] = value;
+  count++;
+
+  //if(values[0] == value && parent)
+    //tell parent new min
+}
 
 LeafNode* LeafNode::insert(int value)
 {
-  // students must write this
+  add(value);
   return NULL; // to avoid warnings for now.
 }  // LeafNode::insert()
 
@@ -37,5 +49,3 @@ void LeafNode::print(Queue <BTreeNode*> &queue)
     cout << values[i] << ' ';
   cout << endl;
 } // LeafNode::print()
-
-

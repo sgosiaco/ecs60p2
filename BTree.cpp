@@ -14,6 +14,7 @@ BTree::BTree(int ISize, int LSize):internalSize(ISize), leafSize(LSize)
 void BTree::insert(const int value)
 {
   // students must write this
+  BTreeNode* ptr = root->insert(value);
 } // BTree::insert()
 
 
