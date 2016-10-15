@@ -18,8 +18,12 @@ public:
   void insert(BTreeNode *newNode); // from a sibling
   void print(Queue <BTreeNode*> &queue);
 
-  void updateMin(BTreeNode *node);
-  void add(int value);
+  void updateMin(const BTreeNode *node);
+  void add(BTreeNode *ptr, int pos);
+  BTreeNode* addFull(BTreeNode *ptr, int pos);
+  void addLeft(BTreeNode *last);
+  void addRight(BTreeNode *ptr, BTreeNode *last);
+  InternalNode* split(BTreeNode *last);
 }; // InternalNode class
 
 #endif
