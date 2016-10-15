@@ -133,6 +133,6 @@ LeafNode* LeafNode::split(int value, int last)
 
   if(values[0] == value && parent)
     parent->updateMin(this);
-
+    
   return temp;
 }

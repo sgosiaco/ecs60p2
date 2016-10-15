@@ -24,9 +24,9 @@ void InternalNode::add(int value)
 {
   int i;
 
-  for(i = count - 1; i >= 0 && value < keys[i]; i--);
+  for(i = count - 1; i > 0 && value < keys[i]; i--);
 
-  BTreeNode* temp = children[i + 1]->insert(value);
+  BTreeNode* temp = children[i]->insert(value);
 
   if(temp)
     insert(temp);
@@ -46,14 +46,19 @@ void InternalNode::insert(BTreeNode *oldRoot, BTreeNode *node2)
 { // Node must be the root, and node1
   // students must write this
   keys[0] = oldRoot->getMinimum();
+  oldRoot->setLeftSibling(NULL);
+  oldRoot->setRightSibling(node2);
   children[0] = oldRoot;
   oldRoot->setParent(this);
 
   keys[1] = node2->getMinimum();
+  node2->setLeftSibling(oldRoot);
+  node2->setRightSibling(NULL);
   children[1] = node2;
   node2->setParent(this);
 
   count = 2;
+
 } // InternalNode::insert()
 
 void InternalNode::insert(BTreeNode *newNode) // from a sibling
