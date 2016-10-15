@@ -20,9 +20,24 @@ int InternalNode::getMinimum()const
     return 0;
 } // InternalNode::getMinimum()
 
+void InternalNode::add(int value)
+{
+  int i;
+
+  for(i = count - 1; i >= 0 && value < keys[i]; i--);
+
+  BTreeNode* temp = children[i + 1]->insert(value);
+
+  if(temp)
+    insert(temp);
+  //if(values[0] == value && parent)
+    //parent->updateMin(this);
+}
+
 
 InternalNode* InternalNode::insert(int value)
 {
+  add(value);
   // students must write this
   return NULL; // to avoid warnings for now.
 } // InternalNode::insert()
@@ -30,10 +45,21 @@ InternalNode* InternalNode::insert(int value)
 void InternalNode::insert(BTreeNode *oldRoot, BTreeNode *node2)
 { // Node must be the root, and node1
   // students must write this
+  keys[0] = oldRoot->getMinimum();
+  children[0] = oldRoot;
+  oldRoot->setParent(this);
+
+  keys[1] = node2->getMinimum();
+  children[1] = node2;
+  node2->setParent(this);
+
+  count = 2;
 } // InternalNode::insert()
 
 void InternalNode::insert(BTreeNode *newNode) // from a sibling
 {
+  keys[++count] = newNode->getMinimum();
+  children[count] = newNode;
   // students may write this
 } // InternalNode::insert()
 
@@ -51,4 +77,14 @@ void InternalNode::print(Queue <BTreeNode*> &queue)
 
 } // InternalNode::print()
 
+void InternalNode::updateMin(BTreeNode *node)
+{
+  int i;
 
+  for(i = 0; i < count; i++)
+    if(children[i] == node)
+    {
+      keys[i] = node->getMinimum();
+      break;
+    }
+}

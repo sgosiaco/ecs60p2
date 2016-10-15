@@ -32,8 +32,8 @@ void LeafNode::add(int value)
   values[i + 1] = value;
   count++;
 
-  //if(values[0] == value && parent)
-    //tell parent new min
+  if(values[0] == value && parent)
+    parent->updateMin(this);
 }
 
 void LeafNode::addLeft(int value, int last)
@@ -46,16 +46,16 @@ void LeafNode::addLeft(int value, int last)
 
   values[i] = last;
 
-  //if(parent)
-    //tell parent new min
+  if(parent)
+    parent->updateMin(this);
 }
 
 void LeafNode::addRight(int value, int last)
 {
   rightSibling->insert(last);
 
-  //if(values[0] == value && parent)
-    //tell parent new min
+  if(values[0] == value && parent)
+    parent->updateMin(this);
 }
 
 void LeafNode::addFull(int value, int &last)
@@ -63,9 +63,7 @@ void LeafNode::addFull(int value, int &last)
   int i;
 
   if(value > values[count - 1])
-  {
     last = value;
-  }
   else
   {
     last = values[count - 1];
@@ -133,8 +131,8 @@ LeafNode* LeafNode::split(int value, int last)
   temp->count++;
   count = (leafSize + 1) / 2;
 
-  //if(values[0] == value && parent)
-    //tell parent new min
+  if(values[0] == value && parent)
+    parent->updateMin(this);
 
   return temp;
 }

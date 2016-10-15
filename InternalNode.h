@@ -17,6 +17,9 @@ public:
   void insert(BTreeNode *oldRoot, BTreeNode *node2); // if root splits use this
   void insert(BTreeNode *newNode); // from a sibling
   void print(Queue <BTreeNode*> &queue);
+
+  void updateMin(BTreeNode *node);
+  void add(int value);
 }; // InternalNode class
 
 #endif
