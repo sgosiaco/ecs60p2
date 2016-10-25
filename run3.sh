@@ -12,17 +12,17 @@ while ($ADT < 15)
     echo File{$fileNum}.dat > tt.tmp
     echo Running File{$fileNum}.dat once for ADT $ADT
     echo $ADT >> tt.tmp
-    
+
     if [ $ADT -eq 11 ]
     then
 	echo 1000000 >> tt.tmp
-	
+
 	echo $ADT >> tt.tmp
 	echo 500000 >> tt.tmp
 
 	echo $ADT >> tt.tmp
 	echo 50000 >> tt.tmp
-	
+
 	echo $ADT >> tt.tmp
 	echo 5000 >> tt.tmp
 
@@ -59,14 +59,14 @@ while ($ADT < 15)
 
         echo $ADT >> tt.tmp
         echo 500000 >> tt.tmp
- 
+
         echo $ADT >> tt.tmp
         echo 250000 >> tt.tmp
         echo Load factor 0.1 .25 .5 1 2 >> results
         echo HT Size 5000000 2000000 1000000 500000 250000 >> results
     fi
     echo 0 >> tt.tmp
-    echo -n File{$fileNum}  $ADT "  " >> results 
+    echo -n File{$fileNum}  $ADT "  " >> results
     timetest3.out < tt.tmp | awk '/CPU/ {printf("%s     ", $6)}' >> results
     echo " " >> results
     @ fileNum ++
@@ -74,4 +74,3 @@ while ($ADT < 15)
 
   @ ADT ++
 end # while more ADTs
-
