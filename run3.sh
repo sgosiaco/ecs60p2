@@ -1,19 +1,46 @@
-#! /bin/sh
+#! /bin/tcsh
 
 echo This script assumes that your timetest program is named a.out.
 echo The times of the three runs for each ADT are placed in the file \"results\"
-echo "File ADT# Time#1       Time#2       Time#3      Ignore" > results
+echo "File ADT# Time#1  Ignore" > results
 
-set ADT = 11
+set ADT = 8
 
 while ($ADT < 15)
   set fileNum = 1
-  while ($fileNum < 2)
+  echo " " >> results
+  if( $ADT == 10) then
+      echo "M,L        3,1          3,200        1000,2      1000,200" >> results
+  else if ( $ADT == 11 ) then
+      echo "Load factor 0.5		1	     10	          100	      1000" >> results
+      echo "HT Size	   1000000	500000	     50000	  5000	      500" >> results
+  else if( $ADT == 12 || $ADT == 14) then
+      echo "Load factor 0.1		.25	     .5		 1	      2" >> results
+      echo "HT Size	   5000000	2000000	     1000000	 500000	      250000" >> results
+  endif
+  while ($fileNum < 5)
     echo File{$fileNum}.dat > tt.tmp
     echo Running File{$fileNum}.dat once for ADT $ADT
     echo $ADT >> tt.tmp
 
-    if [ $ADT -eq 11 ]; then
+    if( $ADT == 10 ) then
+      echo 3 >> tt.tmp
+      echo 1 >> tt.tmp
+
+      echo $ADT >> tt.tmp
+      echo 3 >> tt.tmp
+      echo 200 >> tt.tmp
+
+      echo $ADT >> tt.tmp
+      echo 1000 >> tt.tmp
+      echo 2 >> tt.tmp
+
+      echo $ADT >> tt.tmp
+      echo 1000 >> tt.tmp
+      echo 200 >> tt.tmp
+    endif
+
+    if ( $ADT == 11 ) then
       echo 1000000 >> tt.tmp
 
       echo $ADT >> tt.tmp
@@ -27,9 +54,9 @@ while ($ADT < 15)
 
       echo $ADT >> tt.tmp
       echo 500 >> tt.tmp
-      echo Load factor 0.5 1 10 100 1000 >> results
-      echo HT Size 1000000 500000 50000 5000 500 >> results
-    elif [ $ADT -eq 12 ]; then
+    endif
+
+    if ( $ADT == 12 || $ADT == 14) then
       echo 5000000 >> tt.tmp
 
       echo $ADT >> tt.tmp
@@ -43,28 +70,17 @@ while ($ADT < 15)
 
       echo $ADT >> tt.tmp
       echo 250000 >> tt.tmp
-      echo Load factor 0.1 .25 .5 1 2 >> results
-      echo HT Size 5000000 2000000 1000000 500000 250000 >> results
-    elif [ $ADT -eq 14 ]; then
-      echo 5000000 >> tt.tmp
+    endif
 
-      echo $ADT >> tt.tmp
-      echo 2000000 >> tt.tmp
-
-      echo $ADT >> tt.tmp
-      echo 1000000 >> tt.tmp
-
-      echo $ADT >> tt.tmp
-      echo 500000 >> tt.tmp
-
-      echo $ADT >> tt.tmp
-      echo 250000 >> tt.tmp
-      echo Load factor 0.1 .25 .5 1 2 >> results
-      echo HT Size 5000000 2000000 1000000 500000 250000 >> results
-    fi
     echo 0 >> tt.tmp
     echo -n File{$fileNum}  $ADT "  " >> results
-    timetest3.out < tt.tmp | awk '/CPU/ {printf("%s     ", $6)}' >> results
+    if( $ADT == 11 || $ADT == 12 || $ADT == 14) then
+     	timetest3.out < tt.tmp | awk '/CPU/ {printf("%s     ", $15)}' >> results
+    else if( $ADT == 10) then
+     	timetest3.out < tt.tmp | awk '/CPU/ {printf("%s     ", $20)}' >> results
+    else
+    	timetest3.out < tt.tmp | awk '/CPU/ {printf("%s     ", $6)}' >> results	
+    endif
     echo " " >> results
     @ fileNum ++
   end # while more files
